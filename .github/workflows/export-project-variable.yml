@@ -40,4 +40,4 @@ jobs:
     steps:
       - name: Get the data
         run: |
-          cat ${{ github.event.inputs.ProjectName }}/${{ github.event.inputs.ProjectName }}-vars.json
+          cat ./${{ github.event.inputs.ProjectName }}/${{ github.event.inputs.ProjectName }}-vars.json
