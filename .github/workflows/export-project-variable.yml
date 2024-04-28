@@ -27,12 +27,37 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   export-project-variable:
-    uses: Puru-Org/Octopus-Deploy/.github/workflows/exportOctopusProjectVariables.yaml@main
-    with: 
-      ProjectName: ${{ github.event.inputs.ProjectName }}
-      octopus_url: ${{ github.event.inputs.octopus_url }}
-      # Runs a set of commands using the runners shell
-    secrets: inherit
+    # uses: Puru-Org/Octopus-Deploy/.github/workflows/exportOctopusProjectVariables.yaml@main
+    # with: 
+    #   ProjectName: ${{ github.event.inputs.ProjectName }}
+    #   octopus_url: ${{ github.event.inputs.octopus_url }}
+    #   # Runs a set of commands using the runners shell
+    # secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Export project variable
+        uses: Puru-Org/Octopus-Deploy/.github/workflows/exportOctopusProjectVariables.yaml@main
+        with: 
+          ProjectName: ${{ github.event.inputs.ProjectName }}
+          octopus_url: ${{ github.event.inputs.octopus_url }}
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "there are new changes";
+            # git config --global user.name 'Github Action'
+            # git config --global user.email 'puru7791@users.noreply.github.com'
+            #git remote set-url origin https://github.com/${GITHUB_REPOSITORY}.git
+            git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.GIT
+            #git checkout "${GITHUB_REF:11}"
+            git checkout -b "GH-Auto"
+            git add -A
+            git commit -m "Auto-generated: Added extracted Octopus variables file"
+            #git push origin "${GITHUB_REF:11}"
+            git push origin GH-Auto
+          else
+            echo "Your branch is up to date.";
+          fi
   Get-the-Data:
     needs: 
       - export-project-variable
