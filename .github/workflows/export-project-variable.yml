@@ -27,7 +27,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   export-project-variable:
-    uses: puru7791/Octopus-Deploy/.github/workflows/exportOctopusProjectVariables.yaml@main
+    uses: Puru-Org/Octopus-Deploy/.github/workflows/exportOctopusProjectVariables.yaml@main
     with: 
       ProjectName: ${{ github.event.inputs.ProjectName }}
       octopus_url: ${{ github.event.inputs.octopus_url }}
