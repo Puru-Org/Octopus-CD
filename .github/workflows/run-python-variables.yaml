@@ -8,15 +8,16 @@ on:
       source_data: 
         type: string
         required: true
-        description: 'Octopus VariableSet Name'
+        default: source_data
       dest_json:
         type: string
         required: true
-        default: source_data
+        description: 'Destination Project file path'
+        
 jobs:
     # This workflow contains a single job called "build"
-    export-project-variable:
-      uses: Puru-Org/Octopus-Deploy/.github/workflows/exportOctopusProjectVariables.yaml@main
+    export-globalVariableToproject:
+      uses: Puru-Org/Octopus-Deploy/.github/workflows/python.yaml@main
       with: 
         source_data: ${{ github.event.inputs.source_data }}
         dest_json: ${{ github.event.inputs.dest_json }}
