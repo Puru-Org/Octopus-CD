@@ -1,0 +1,135 @@
+{
+  "Variables": [
+    {
+      "Name": "ENV",
+      "Value": "DEV",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-2"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Name": "ENV",
+      "Value": "REVIEW",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-4"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Name": "ENV",
+      "Value": "QA",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-3"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Name": "ENV",
+      "Value": "PROD",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-1"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Name": "app:port",
+      "Value": "4444",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Name": "profiles:Octopus.Trident.Database.DbUp:commandName",
+      "Value": "DUMMY_VALUE",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Name": "ApplicationID",
+      "Value": "111222",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Name": "Application_Name",
+      "Value": "Terraform_From_GitHub",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "887368c2-e464-de3c-eaf8-ef962b84fd7f",
+      "Name": "Name",
+      "Value": "puru-from-github",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    }
+  ],
+  "ScopeValues": {
+    "Environments": [
+      {
+        "Id": "Environments-2",
+        "Name": "Development"
+      },
+      {
+        "Id": "Environments-5",
+        "Name": "Staging"
+      },
+      {
+        "Id": "Environments-4",
+        "Name": "Test"
+      },
+      {
+        "Id": "Environments-3",
+        "Name": "QA"
+      },
+      {
+        "Id": "Environments-1",
+        "Name": "Production"
+      }
+    ]
+  }
+}
