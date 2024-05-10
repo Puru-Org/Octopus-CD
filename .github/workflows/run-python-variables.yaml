@@ -5,19 +5,20 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs: 
-      source_data: 
+      global_ref_json: 
         type: string
         required: true
-        default: source_data
-      dest_json:
+        default: Octopus/global_ref.json
+      project_variable_json:
         type: string
         required: true
         description: 'Destination Project file path'
+        default: Octopus/demo-variables.json
         
 jobs:
     # This workflow contains a single job called "build"
     export-globalVariableToproject:
       uses: Puru-Org/Octopus-Deploy/.github/workflows/python.yaml@main
       with: 
-        source_data: ${{ github.event.inputs.source_data }}
-        dest_json: ${{ github.event.inputs.dest_json }}
+        source_data: ${{ github.event.inputs.global_ref_json }}
+        dest_json: ${{ github.event.inputs.project_variable_json }}
