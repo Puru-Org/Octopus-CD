@@ -95,17 +95,6 @@
       "Prompt": null,
       "Type": "String",
       "IsSensitive": false
-    },
-    {
-      "Id": "887368c2-e464-de3c-eaf8-ef962b84fd7f",
-      "Name": "Name",
-      "Value": "puru-from-github",
-      "Description": null,
-      "Scope": {},
-      "IsEditable": true,
-      "Prompt": null,
-      "Type": "String",
-      "IsSensitive": false
     }
   ],
   "ScopeValues": {

@@ -1,0 +1,12 @@
+[
+    {
+        "source_json": "https://raw.githubusercontent.com/Puru-Org/Octopus-Deploy/main/AppSettings/AppSettings-vars.json",
+        "variable_names": ["AppSettings.var1", "AppSettings.Active", "AppSettings.clientID"]
+    },
+    {
+        "source_json": "https://raw.githubusercontent.com/Puru-Org/Octopus-Deploy/main/TestingVS/exportedVariableSet-3-vars.json",
+        "variable_names": [],
+        "copy_all": true
+    }
+]
+
