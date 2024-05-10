@@ -20,5 +20,5 @@ jobs:
     export-globalVariableToproject:
       uses: Puru-Org/Octopus-Deploy/.github/workflows/python.yaml@main
       with: 
-        source_data: ${{ github.event.inputs.global_ref_json }}
-        dest_json: ${{ github.event.inputs.project_variable_json }}
+        global_ref_json: ${{ github.event.inputs.global_ref_json }}
+        project_variable_json: ${{ github.event.inputs.project_variable_json }}
