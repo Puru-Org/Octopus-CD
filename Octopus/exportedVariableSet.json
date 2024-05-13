@@ -1,0 +1,286 @@
+{
+  "Variables": [
+    {
+      "Id": "1d425712-b903-b48c-021e-8d90f4db875a",
+      "Name": "Name2",
+      "Value": "Puru-from-github-importjob",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "887368c2-e464-de3c-eaf8-ef962b84fd7f",
+      "Name": "Name",
+      "Value": "puru-from-github",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "92a0cfa6-f235-d604-2989-f5228e488fe8",
+      "Name": "AppSettings.var1",
+      "Value": "Value-from-json-pointers",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-1"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "955613e2-7a6c-9f13-5be5-fcf74a36b3b0",
+      "Name": "AppSettings.var1",
+      "Value": "val2",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-4"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "356ebf83-9c15-0e56-84e7-b4dacf10534a",
+      "Name": "AppSettings.var1",
+      "Value": "val3",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-5"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "3bf3081e-754d-063a-8ae6-892ed98eee7f",
+      "Name": "AppSettings.var1",
+      "Value": "val4",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-2"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "8fb3bd71-4d8c-9828-f595-18b487c7c4df",
+      "Name": "AppSettings.var1",
+      "Value": "val5",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-3"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "1fcddbc2-a55a-5e7b-5bb4-c1fc7b271c71",
+      "Name": "AppSettings.Active",
+      "Value": "1",
+      "Description": null,
+      "Scope": {},
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "241889f3-c6d7-ee66-bd58-45bbf9834bf0",
+      "Name": "AppSettings.clientID",
+      "Value": "cl1",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-1"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "e35182be-702b-a975-7651-23a26402e57d",
+      "Name": "AppSettings.clientID",
+      "Value": "cl2",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-4"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "97c3e003-18ce-ecd9-339f-dbccc8f20f6a",
+      "Name": "AppSettings.clientID",
+      "Value": "cl3",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-5"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "972584db-21db-0d41-14b2-20c050dd3cc0",
+      "Name": "AppSettings.clientID",
+      "Value": "cl4",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-2"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "49cb7b72-e41f-6081-e785-531159636ce3",
+      "Name": "AppSettings.clientID",
+      "Value": "cl5",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-3"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "38cb4dc2-bd84-fe2e-9b21-6c274ac2e6f6",
+      "Name": "app.version",
+      "Value": "dev-0.1",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-1"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "c14549c8-32bc-d28b-c122-50175b5f9c19",
+      "Name": "app.version",
+      "Value": "test-0.1",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-4"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "4918113b-ca2f-576a-effb-1ac5c9682ef6",
+      "Name": "app.version",
+      "Value": "qa-0.1",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-5"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "dd17f176-0300-3b03-f940-447ffa993755",
+      "Name": "app.version",
+      "Value": "staging-0.1",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-2"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    },
+    {
+      "Id": "57809f43-2f7f-71ce-3c89-ed9b5a82feac",
+      "Name": "app.version",
+      "Value": "live-0.1",
+      "Description": null,
+      "Scope": {
+        "Environment": [
+          "Environments-3"
+        ]
+      },
+      "IsEditable": true,
+      "Prompt": null,
+      "Type": "String",
+      "IsSensitive": false
+    }
+  ],
+  "ScopeValues": {
+    "Environments": [
+      {
+        "Id": "Environments-1",
+        "Name": "Development"
+      },
+      {
+        "Id": "Environments-2",
+        "Name": "Staging"
+      },
+      {
+        "Id": "Environments-3",
+        "Name": "Production"
+      },
+      {
+        "Id": "Environments-4",
+        "Name": "Test"
+      },
+      {
+        "Id": "Environments-5",
+        "Name": "QA"
+      }
+    ]
+  }
+}
