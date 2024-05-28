@@ -1,5 +1,4 @@
 name: Clone list of Global variables
-
 on:
 
   # Allows you to run this workflow manually from the Actions tab
@@ -18,7 +17,7 @@ on:
 jobs:
     # This workflow contains a single job called "build"
     export-globalVariableToproject:
-      uses: Puru-Org/Octopus-Deploy/.github/workflows/python.yaml@main
+      uses: Puru-Org/Octopus-Deploy/.github/workflows/python-pattern2.yaml@main
       with: 
         global_ref_json: ${{ github.event.inputs.global_ref_json }}
         project_variable_json: ${{ github.event.inputs.project_variable_json }}
