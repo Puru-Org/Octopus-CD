@@ -28,10 +28,14 @@ jobs:
         # Define variables
         $octopusURL = "${{ github.event.inputs.octopus_url }}"
         $apiKey = "${{ secrets.OCTOPUS_API_KEY }}"
-        $header = @{ "X-Octopus-ApiKey" = $apiKey }
+        
         $sourceVariableFile = "${{ github.event.inputs.variableFilePath }}"
         $projectName = "${{ github.event.inputs.ProjectName }}"
         $spaceName = "Default"
+        $header = @{ 
+            "X-Octopus-ApiKey" = $apiKey
+            "Content-Type" = "application/json" 
+        }
         # Function to get environment ID by name
         function Get-EnvironmentIdByName {
             param (

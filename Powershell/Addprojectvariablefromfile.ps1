@@ -4,7 +4,10 @@
 # Define variables
 $octopusURL = "https://puru1.octopus.app"
 $apiKey = "API-SSHAV55JWETPAP6UAIM1ZQ4IBQRITSHZ"
-$header = @{ "X-Octopus-ApiKey" = $apiKey }
+$header = @{ 
+    "X-Octopus-ApiKey" = $apiKey
+    "Content-Type" = "application/json" 
+}
 $sourceVariableFile = "variable-2.json"
 $projectName = "test"
 $spaceName = "Default"
