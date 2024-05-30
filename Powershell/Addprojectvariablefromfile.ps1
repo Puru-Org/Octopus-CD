@@ -2,11 +2,11 @@
 # https://chatgpt.com/c/2de6180e-1064-460d-ad39-6fb741c1290c
 #
 # Define variables
-$octopusURL = "https://your.octopus.url"
-$apiKey = "API-YOURAPIKEY"
+$octopusURL = "https://puru1.octopus.app"
+$apiKey = "API-SSHAV55JWETPAP6UAIM1ZQ4IBQRITSHZ"
 $header = @{ "X-Octopus-ApiKey" = $apiKey }
-$sourceVariableFile = "path\to\your\variable.json"
-$projectName = ""
+$sourceVariableFile = "variable-2.json"
+$projectName = "test"
 $spaceName = "Default"
 # Function to get environment ID by name
 function Get-EnvironmentIdByName {
@@ -35,7 +35,7 @@ $destinationProjects = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($sp
 $destinationProject = $destinationProjects | Where-Object { $_.Name -eq "$projectName" } # Change "Your Project Name" accordingly
 
 # Get project variables
-$projectVariables = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/$($project.Id)/variables" -Headers $header
+$projectVariables = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/$($destinationProject.Id)/variables" -Headers $header
 
 # Load source variable file
 $sourceVariables = Get-Content -Path $sourceVariableFile | ConvertFrom-Json

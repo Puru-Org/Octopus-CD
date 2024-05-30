@@ -17,7 +17,7 @@ on:
         description: Source variable file path
         
 jobs:
-  build:
+  Add-variables-to-Octopus-project:
     runs-on: windows-latest
 
     steps:
@@ -59,7 +59,7 @@ jobs:
         $destinationProject = $destinationProjects | Where-Object { $_.Name -eq $projectName } # Change "Your Project Name" accordingly
 
         # Get project variables
-        $projectVariables = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/$($project.Id)/variables" -Headers $header
+        $projectVariables = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/$($destinationProject.Id)/variables" -Headers $header
 
         # Load source variable file
         $sourceVariables = Get-Content -Path $sourceVariableFile | ConvertFrom-Json
