@@ -87,5 +87,5 @@ foreach ($sourceVariable in $sourceVariables.Variables) {
 
 # Update the project variables
 Write-Host "Saving variables to $octopusURL$($destinationProject.Links.Variables)"
-$updateResponse = Invoke-RestMethod -Method Post -Uri "$octopusURL$($destinationProject.Links.Variables)" -Headers $header -Body ($projectVariables | ConvertTo-Json -Depth 10)
+$updateResponse = Invoke-RestMethod -Method Put -Uri "$octopusURL$($destinationProject.Links.Variables)" -Headers $header -Body ($projectVariables | ConvertTo-Json -Depth 10)
 Write-Output "Project variables updated successfully."
