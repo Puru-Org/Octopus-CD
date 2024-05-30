@@ -79,6 +79,7 @@ foreach ($sourceVariable in $sourceVariables.Variables) {
         $newVariable = @{
             Name = $name
             Value = $value
+            Type  = "String"
             Scope = @{
                 Environment = $environmentIds
             }
