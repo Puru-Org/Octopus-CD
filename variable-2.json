@@ -2,37 +2,20 @@
     "Variables": [
         {
             "Name": "variable-1",
-            "Value": "Test/QA/Prod-scope-test",
+            "Value": "Dev-1",
+            "IsSensitive": false,
+            "Type": "String",
             "Scope": {
                 "Environment": [
-                    "Production",
-                    "Test",
-                    "QA"
+                    "Development"
                 ]
             }
         },
         {
             "Name": "variable-1",
-            "Value": "scope-test-movingtoQA",
-            "Scope": {
-                "Environment": [
-                    "QA"
-                ]
-            }
-        },
-        {
-            "Name": "variable-1",
-            "Value": "QA-scope-test",
-            "Scope": {
-                "Environment": [
-                    "QA",
-                    "Test"
-                ]
-            }
-        },
-        {
-            "Name": "variable-1",
-            "Value": "Test-scope-test",
+            "Value": "Test",
+            "IsSensitive": false,
+            "Type": "String",
             "Scope": {
                 "Environment": [
                     "Test"
@@ -41,7 +24,22 @@
         },
         {
             "Name": "variable-1",
-            "Value": "Staging-scope-test",
+            "Value": "QAs-1-modified",
+            "IsSensitive": false,
+            "Type": "String",
+            "Scope": {
+                "Environment": [
+                    "QA-1",
+                    "QA-2",
+                    "QA-3"
+                ]
+            }
+        },
+        {
+            "Name": "variable-1",
+            "Value": "Stage value",
+            "IsSensitive": false,
+            "Type": "String",
             "Scope": {
                 "Environment": [
                     "Staging"
@@ -49,8 +47,21 @@
             }
         },
         {
+            "Name": "variable-1",
+            "Value": "Prod value",
+            "IsSensitive": false,
+            "Type": "String",
+            "Scope": {
+                "Environment": [
+                    "Production"
+                ]
+            }
+        },
+        {
             "Name": "variable-2",
             "Value": "Prod-scope-test",
+            "IsSensitive": false,
+            "Type": "String",
             "Scope": {
                 "Environment": [
                     "Production"   
@@ -60,14 +71,68 @@
         {
             "Name": "variable-2",
             "Value": "puru2-scope-test",
-            "Environment": [
-                "Test"
-            ]
+            "IsSensitive": false,
+            "Type": "String",
+            "Scope": {
+                "Environment": [
+                    "Test",
+                    "QA-1",
+                    "QA-2",
+                    "QA-3"
+                ]
+            }
         },
         {
             "Name": "variable-2",
-            "Value": "puru2-withoutscope",
-            "Environment": []
+            "Value": "puru2-without-scope-changed",
+            "IsSensitive": false,
+            "Type": "String",
+            "Scope":{
+                "Environment": []
+            }
+        },
+        {
+            "Name": "variable-3",
+            "Value": "puru3-withscope",
+            "IsSensitive": false,
+            "Type": "String",
+            "Scope": {
+                "Environment": [
+                    "Development",
+                    "Test"
+                ]
+            }
+        },
+        {
+            "Name": "variable-3",
+            "Value": "puru3-withoutscope-changed",
+            "IsSensitive": false,
+            "Type": "String",
+            "Scope":{
+                "Environment": []
+            }
+        },
+        {
+            "Name": "variable-4",
+            "Value": "value-sensitive",
+            "IsSensitive": true,
+            "Type": "Sensitive",
+            "Scope":{
+                "Environment": [
+                    "Development"
+                ]
+            }
+        },
+        {
+            "Name": "variable-4",
+            "Value": "CertificatesName",
+            "IsSensitive": false,
+            "Type": "Certificate",
+            "Scope":{
+                "Environment": [
+                    "Development"
+                ]
+            }
         }
     ]
 }

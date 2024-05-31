@@ -26,9 +26,9 @@ jobs:
     - name: Powershell script to add project variables
       run: |
         # Define variables
+        #Below powershell script able to load all variables from the Json file and adding to the Octopus Project vaiables
         $octopusURL = "${{ github.event.inputs.octopus_url }}"
         $apiKey = "${{ secrets.OCTOPUS_API_KEY }}"
-        
         $sourceVariableFile = "${{ github.event.inputs.variableFilePath }}"
         $projectName = "${{ github.event.inputs.ProjectName }}"
         $spaceName = "Default"
@@ -50,6 +50,19 @@ jobs:
             }
             return $null
         }
+        function Get-EnvironmentNameById {
+            param (
+                [string]$environmentId,
+                [array]$environmentList
+            )
+
+            foreach ($env in $environmentList) {
+                if ($env.Id -eq $environmentId) {
+                    return $env.Name
+                }
+            }
+            return $null
+        }
 
         # Get space
         $spaces = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/spaces/all" -Headers $header
@@ -59,65 +72,115 @@ jobs:
         $destinationEnvironmentList = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/environments/all" -Headers $header
 
         # Get destination project
-        $destinationProjects = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/all" -Headers $header
-        $destinationProject = $destinationProjects | Where-Object { $_.Name -eq $projectName } # Change "Your Project Name" accordingly
+        $projects = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/all" -Headers $header
+        $project = $projects | Where-Object { $_.Name -eq $projectName } # Change "Your Project Name" accordingly
 
         # Get project variables
-        $projectVariables = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/$($destinationProject.Id)/variables" -Headers $header
+        $projectVariables = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/$($project.Id)/variables" -Headers $header
+
+        # Load all variables into $destinationVariables
+        $destinationVariables = $projectVariables.Variables
 
         # Load source variable file
         $sourceVariables = Get-Content -Path $sourceVariableFile | ConvertFrom-Json
+        try {
+        # Process each source variable
+            foreach ($sourceVariable in $sourceVariables.Variables) {
+                $name = $sourceVariable.Name
+                $value = $sourceVariable.Value
+                $type = $sourceVariable.Type
+                $scopeEnvironments = $sourceVariable.Scope.Environment
 
-        # Initialize destination matched variables
-        $destinationMatchedVariables = @()
+                # Check for sensitive variables
+                if ($sourceVariable.IsSensitive -eq $true) {
+                    Write-Host "Warning: Setting sensitive value for $($variableName) to DUMMY VALUE" -ForegroundColor Yellow
+                    $value = "DUMMY VALUE"
+                }
 
-        foreach ($sourceVariable in $sourceVariables.Variables) {
-            $name = $sourceVariable.Name
-            $value = $sourceVariable.Value
-            $scopeEnvironments = $sourceVariable.Scope.Environment
+                # Check for account type variables
+                if ($sourceVariable.Type -match ".*Account") {
+                    if ($keepSourceAccountVariableValues -eq $false) {
+                        Write-Host "Warning: Cannot convert account type to destination account as keepSourceAccountVariableValues set to false. Setting to DUMMY VALUE" -ForegroundColor Yellow
+                        $value = "DUMMY VALUE"
+                    }
+                }
 
-            $destinationVariable = $projectVariables.Variables | Where-Object { $_.Name -eq $name }
+                # Check for certificate type variables
+                if ($sourceVariable.Type -match ".*Certificate") {
+                    if ($keepSourceAccountVariableValues -eq $false) {
+                        Write-Host "Warning: Cannot convert certificate type to destination certificate as keepSourceAccountVariableValues set to false. Setting to DUMMY VALUE" -ForegroundColor Yellow
+                        $value = "DUMMY VALUE"
+                    }
+                }
+                # Find all matching destination variables
+                $matchingDestinationVariables = $destinationVariables | Where-Object { $_.Name -eq $name }
 
-            if ($destinationVariable) {
-                foreach ($destVar in $destinationVariable) {
-                    $destScopeEnvironments = $destVar.Scope.Environment
+                $matched = $false
 
-                    if ($scopeEnvironments -and ($scopeEnvironments -join ',') -eq ($destScopeEnvironments -join ',')) {
-                        if ($value -eq $destVar.Value) {
-                            Write-Output "Variable '$name' with value '$value' already exists in environments: $($scopeEnvironments -join ', ')"
-                        } else {
-                            Write-Warning "Variable '$name' has different value. Updating value to '$value' in environments: $($scopeEnvironments -join ', ')"
-                            $destVar.Value = $value
+                if ($matchingDestinationVariables) {
+                    foreach ($destVar in $matchingDestinationVariables) {
+                        # Convert scope environments to their names for comparison
+                        $destScopeEnvironmentsIds = $destVar.Scope.Environment
+                        # Get environment Names from project variable scope Environment
+                        $destScopeEnvironmentsNames = @()
+                        foreach ($destenvId in $destScopeEnvironmentsIds) {
+                            $destenvName = Get-EnvironmentNameById -environmentId $destenvId -environmentList $destinationEnvironmentList
+                            if ($destenvName) {
+                                $destScopeEnvironmentsNames += $destenvName
+                            }
+                        }
+                        if (($null -eq $scopeEnvironments -or $scopeEnvironments.Count -eq 0) -and ($null -eq $destVar.Scope.Environment -or $destVar.Scope.Environment.Count -eq 0)) {
+                            $matched = $true
+                            if ($value -eq $destVar.Value) {
+                                Write-Output "Variable '$name' with value '$value' already exists with no environment scope."
+                            } else {
+                                Write-Warning "Variable '$name' has different value. Updating value to '$value' with no environment scope."
+                                $destVar.Value = $value
+                            }
+                        }
+                        elseif ($scopeEnvironments -and ($scopeEnvironments -join ',') -eq ($destScopeEnvironmentsNames -join ',')) {
+                            $matched = $true
+                            if ($value -eq $destVar.Value) {
+                                Write-Output "Variable '$name' with value '$value' already exists in environments: $($scopeEnvironments -join ', ')"
+                            } else {
+                                Write-Warning "Variable '$name' has different value. Updating value to '$value' in environments: $($scopeEnvironments -join ', ')"
+                                $destVar.Value = $value
+                            }
                         }
                     }
                 }
-            } else {
-                # Get environment IDs for scope
-                $environmentIds = @()
-                foreach ($envName in $scopeEnvironments) {
-                    $envId = Get-EnvironmentIdByName -environmentName $envName -environmentList $destinationEnvironmentList
-                    if ($envId) {
-                        $environmentIds += $envId
+
+                if (-not $matched) {
+                    # Add new variable
+                    $environmentIds = @()
+                    foreach ($envName in $scopeEnvironments) {
+                        $envId = Get-EnvironmentIdByName -environmentName $envName -environmentList $destinationEnvironmentList
+                        if ($envId) {
+                            $environmentIds += $envId
+                        }
                     }
-                }
-                # Add new variable
-                $newVariable = @{
-                    Name = $name
-                    Value = $value
-                    Type = "String"
-                    Scope = @{
-                        Environment = $environmentIds
+                    $newVariable = @{
+                        Name = $name
+                        Value = $value
+                        Type  = $type
+                        Scope = @{
+                            Environment = $environmentIds
+                        }
                     }
+                    $projectVariables.Variables += $newVariable
+                    Write-Output "Added new variable '$name' with value '$value' in environments: $($scopeEnvironments -join ', ')"
                 }
-                $projectVariables.Variables += $newVariable
-                Write-Output "Added new variable '$name' with value '$value' in environments: $($scopeEnvironments -join ', ')"
             }
+            # Update the project variables
+            Write-Host "Saving variables to $octopusURL$($project.Links.Variables)"
+            Invoke-RestMethod -Method Put -Uri "$octopusURL$($project.Links.Variables)" -Headers $header -Body ($projectVariables | ConvertTo-Json -Depth 10)
+            Write-Output "Project variables updated successfully."
+
+        }
+        catch {
+            Write-Error "Failed to update project variables. Error: $_"
         }
 
-        # Update the project variables
-        Write-Host "Saving variables to $octopusURL$($destinationProject.Links.Variables)"
-        $updateResponse = Invoke-RestMethod -Method Put -Uri "$octopusURL$($destinationProject.Links.Variables)" -Headers $header -Body ($projectVariables | ConvertTo-Json -Depth 10)
-        Write-Output "Project variables updated successfully."
     - name: Clear Workspace
       if: always()
       run: |

@@ -2,14 +2,14 @@
 # https://chatgpt.com/c/2de6180e-1064-460d-ad39-6fb741c1290c
 #
 # Define variables
-$octopusURL = "https://puru1.octopus.app"
-$apiKey = "API-SSHAV55JWETPAP6UAIM1ZQ4IBQRITSHZ"
+$octopusURL = ""
+$apiKey = ""
 $header = @{ 
     "X-Octopus-ApiKey" = $apiKey
     "Content-Type" = "application/json" 
 }
-$sourceVariableFile = "variable-2.json"
-$projectName = "test"
+$sourceVariableFile = ""
+$projectName = ""
 $spaceName = "Default"
 # Function to get environment ID by name
 function Get-EnvironmentIdByName {
@@ -21,6 +21,20 @@ function Get-EnvironmentIdByName {
     foreach ($env in $environmentList) {
         if ($env.Name -eq $environmentName) {
             return $env.Id
+        }
+    }
+    return $null
+}
+# Function to get environment ID by name
+function Get-EnvironmentNameById {
+    param (
+        [string]$environmentId,
+        [array]$environmentList
+    )
+
+    foreach ($env in $environmentList) {
+        if ($env.Id -eq $environmentId) {
+            return $env.Name
         }
     }
     return $null
@@ -43,21 +57,53 @@ $projectVariables = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space
 # Load source variable file
 $sourceVariables = Get-Content -Path $sourceVariableFile | ConvertFrom-Json
 
-# Initialize destination matched variables
-$destinationMatchedVariables = @()
+# Load all variables into $destinationVariables
+$destinationVariables = $projectVariables.Variables
 
 foreach ($sourceVariable in $sourceVariables.Variables) {
     $name = $sourceVariable.Name
     $value = $sourceVariable.Value
+    $type = $sourceVariable.Type
     $scopeEnvironments = $sourceVariable.Scope.Environment
 
-    $destinationVariable = $projectVariables.Variables | Where-Object { $_.Name -eq $name }
+    # Check for sensitive variables
+    if ($sourceVariable.IsSensitive -eq $true) {
+        Write-Host "Warning: Setting sensitive value for $($variableName) to DUMMY VALUE" -ForegroundColor Yellow
+        $sourceVariable.Value = "DUMMY VALUE"
+    }
 
-    if ($destinationVariable) {
-        foreach ($destVar in $destinationVariable) {
-            $destScopeEnvironments = $destVar.Scope.Environment
+    # Check for account type variables
+    if ($sourceVariable.Type -match ".*Account") {
+        if ($keepSourceAccountVariableValues -eq $false) {
+            Write-Host "Warning: Cannot convert account type to destination account as keepSourceAccountVariableValues set to false. Setting to DUMMY VALUE" -ForegroundColor Yellow
+            $sourceVariable.Value = "DUMMY VALUE"
+        }
+    }
 
-            if ($scopeEnvironments -and ($scopeEnvironments -join ',') -eq ($destScopeEnvironments -join ',')) {
+    # Check for certificate type variables
+    if ($sourceVariable.Type -match ".*Certificate") {
+        if ($keepSourceAccountVariableValues -eq $false) {
+            Write-Host "Warning: Cannot convert certificate type to destination certificate as keepSourceAccountVariableValues set to false. Setting to DUMMY VALUE" -ForegroundColor Yellow
+            $sourceVariable.Value = "DUMMY VALUE"
+        }
+    }
+
+    # The interpreter is loading only matched variable name and if any new variable from the json is not adding, need to fix the issue
+    #$destinationVariable = $projectVariables.Variables | Where-Object { $_.Name -eq $name }
+
+    if ($destinationVariables) {
+        
+        foreach ($destVar in $destinationVariables) {
+            $destScopeEnvironmentsIds = $destVar.Scope.Environment
+            # Get environment Names from project variable scope Environment
+            $destScopeEnvironmentsNames = @()
+            foreach ($destenvId in $destScopeEnvironmentsIds) {
+                $destenvName = Get-EnvironmentNameById -environmentId $destenvId -environmentList $destinationEnvironmentList
+                if ($destenvName) {
+                    $destScopeEnvironmentsNames += $destenvName
+                }
+            }
+            if ($scopeEnvironments -and ($scopeEnvironments -join ',') -eq ($destScopeEnvironmentsNames -join ',')) {
                 if ($value -eq $destVar.Value) {
                     Write-Output "Variable '$name' with value '$value' already exists in environments: $($scopeEnvironments -join ', ')"
                 } else {
@@ -79,7 +125,7 @@ foreach ($sourceVariable in $sourceVariables.Variables) {
         $newVariable = @{
             Name = $name
             Value = $value
-            Type  = "String"
+            Type  = $type
             Scope = @{
                 Environment = $environmentIds
             }
