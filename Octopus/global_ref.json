@@ -1,10 +1,10 @@
 [
     {
-        "global_variable_json_url": "https://api.github.com/repos/Puru-Org/GlobalVariable/contents/Octopus-variables/AppSettings-vars.json",
+        "global_variable_json_url": "https://api.github.com/repos/Puru-Org/GlobalVariable/contents/Octopus-variables/AppSettings-vars.json?ref=main",
         "variable_names": ["AppSettings.var1", "AppSettings.Active", "AppSettings.clientID"]
     },
     {
-        "global_variable_json_url": "https://api.github.com/repos/Puru-Org/GlobalVariable/contents/Octopus-variables/exportedVariableSet-3-vars.json",
+        "global_variable_json_url": "https://api.github.com/repos/Puru-Org/GlobalVariable/contents/Octopus-variables/exportedVariableSet-3-vars.json?ref=main",
         "variable_names": [],
         "copy_all": true
     }
