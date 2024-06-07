@@ -21,4 +21,5 @@ jobs:
       with: 
         global_ref_json: ${{ github.event.inputs.global_ref_json }}
         project_variable_json: ${{ github.event.inputs.project_variable_json }}
-      secrets: inherit
+      secrets: 
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
