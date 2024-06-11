@@ -1,0 +1,154 @@
+### Adding variable to the Octopus Project scope with Multi-env scopping 
+### Test-case: 1
+name: Add project variables from the file - pattern-2
+on:
+  workflow_dispatch:
+    inputs:
+      projectName: 
+        required: true
+        description: Octopus Project Name
+        default: third-project
+      octopus_url:
+        type: string
+        required: true
+        default: "https://puru1.octopus.app/"
+      variableFilePath:
+        required: true
+        description: Source variable file path
+        
+jobs:
+  Add-variables-to-Octopus-project:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Powershell script to add project variables
+      run: |
+        # Define variables
+        $octopusURL = "${{ github.event.inputs.octopus_url }}"
+        $apiKey = "${{ secrets.OCTOPUS_API_KEY }}"
+        $sourceVariableFile = "${{ github.event.inputs.variableFilePath }}"
+        $projectName = "${{ github.event.inputs.ProjectName }}"
+        $spaceName = "Default"
+        $header = @{ 
+            "X-Octopus-ApiKey" = $apiKey
+            "Content-Type" = "application/json" 
+        }
+
+        # Function to get environment ID by name
+        function Get-EnvironmentIdByName {
+            param (
+                [string]$environmentName,
+                [array]$environmentList
+            )
+
+            foreach ($env in $environmentList) {
+                if ($env.Name -eq $environmentName) {
+                    return $env.Id
+                }
+            }
+            return $null
+        }
+
+        # Function to get environment name by ID
+        function Get-EnvironmentNameById {
+            param (
+                [string]$environmentId,
+                [array]$environmentList
+            )
+
+            foreach ($env in $environmentList) {
+                if ($env.Id -eq $environmentId) {
+                    return $env.Name
+                }
+            }
+            return $null
+        }
+
+        # Get space
+        $spaces = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/spaces/all" -Headers $header
+        $space = $spaces | Where-Object { $_.Name -eq $spaceName }
+
+        # Get environment list
+        $destinationEnvironmentList = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/environments/all" -Headers $header
+
+        # Get destination project
+        $projects = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/all" -Headers $header
+        $project = $projects | Where-Object { $_.Name -eq $projectName }
+
+        # Get project variables
+        $projectVariables = Invoke-RestMethod -Method Get -Uri "$octopusURL/api/$($space.Id)/projects/$($project.Id)/variables" -Headers $header
+
+        # Clear existing variables
+        $projectVariables.Variables.Clear()
+
+        # Load source variable file
+        $sourceVariables = Get-Content -Path $sourceVariableFile | ConvertFrom-Json
+
+        try {
+            # Process each source variable
+            foreach ($sourceVariable in $sourceVariables.Variables) {
+                $name = $sourceVariable.Name
+                $value = $sourceVariable.Value
+                $type = $sourceVariable.Type
+                $scopeEnvironments = $sourceVariable.Scope.Environment
+
+                # Check for sensitive variables
+                if ($sourceVariable.IsSensitive -eq $true) {
+                    Write-Host "Warning: Setting sensitive value for $($name) to DUMMY VALUE" -ForegroundColor Yellow
+                    $value = "DUMMY VALUE"
+                }
+
+                # Check for account type variables
+                if ($sourceVariable.Type -match ".*Account") {
+                    Write-Host "Warning: Cannot convert account type to destination account. Setting to DUMMY VALUE" -ForegroundColor Yellow
+                    $value = "DUMMY VALUE"
+                }
+
+                # Check for certificate type variables
+                if ($sourceVariable.Type -match ".*Certificate") {
+                    Write-Host "Warning: Cannot convert certificate type to destination certificate. Setting to DUMMY VALUE" -ForegroundColor Yellow
+                    $value = "DUMMY VALUE"
+                }
+
+                # Map environment names to their IDs
+                $environmentIds = @()
+                foreach ($envName in $scopeEnvironments) {
+                    $envId = Get-EnvironmentIdByName -environmentName $envName -environmentList $destinationEnvironmentList
+                    if ($envId) {
+                        $environmentIds += $envId
+                    }
+                }
+
+                # Create new variable
+                $newVariable = @{
+                    Name = $name
+                    Value = $value
+                    Type  = $type
+                    Scope = @{
+                        Environment = $environmentIds
+                    }
+                }
+
+                # Add new variable to project variables
+                $projectVariables.Variables += $newVariable
+                Write-Output "Added new variable '$name' with value '$value' in environments: $($scopeEnvironments -join ', ')"
+            }
+
+            # Update the project variables
+            Write-Host "Saving variables to $octopusURL$($project.Links.Variables)"
+            Invoke-RestMethod -Method Put -Uri "$octopusURL$($project.Links.Variables)" -Headers $header -Body ($projectVariables | ConvertTo-Json -Depth 10)
+            Write-Output "Project variables updated successfully."
+        }
+        catch {
+            Write-Error "Failed to update project variables. Error: $_"
+        }
+
+    - name: Clear Workspace
+      if: always()
+      run: |
+        ls -LiteralPath ${{github.workspace}}
+        rm -Recurse ${{github.workspace}}\*
+        Write-Output "Workspace has been cleared"
+        ls -LiteralPath ${{github.workspace}}
