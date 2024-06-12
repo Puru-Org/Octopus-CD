@@ -2,7 +2,7 @@
     "Variables": [
         {
             "Name": "variable-1",
-            "Value": "Dev-1",
+            "Value": "Dev-1-changed",
             "IsSensitive": false,
             "Type": "String",
             "Scope": {
@@ -117,17 +117,6 @@
             "Value": "value-sensitive",
             "IsSensitive": true,
             "Type": "Sensitive",
-            "Scope":{
-                "Environment": [
-                    "Development"
-                ]
-            }
-        },
-        {
-            "Name": "variable-4",
-            "Value": "CertificatesName",
-            "IsSensitive": false,
-            "Type": "Certificate",
             "Scope":{
                 "Environment": [
                     "Development"
