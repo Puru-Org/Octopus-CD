@@ -2,17 +2,6 @@
     "Variables": [
         {
             "Name": "variable-1",
-            "Value": "Dev-1-changed",
-            "IsSensitive": false,
-            "Type": "String",
-            "Scope": {
-                "Environment": [
-                    "Development"
-                ]
-            }
-        },
-        {
-            "Name": "variable-1",
             "Value": "Test",
             "IsSensitive": false,
             "Type": "String",
