@@ -2,17 +2,6 @@
     "Variables": [
         {
             "Name": "variable-1",
-            "Value": "Dev-1",
-            "IsSensitive": false,
-            "Type": "String",
-            "Scope": {
-                "Environment": [
-                    "Development"
-                ]
-            }
-        },
-        {
-            "Name": "variable-1",
             "Value": "Test",
             "IsSensitive": false,
             "Type": "String",
@@ -117,17 +106,6 @@
             "Value": "value-sensitive",
             "IsSensitive": true,
             "Type": "Sensitive",
-            "Scope":{
-                "Environment": [
-                    "Development"
-                ]
-            }
-        },
-        {
-            "Name": "variable-4",
-            "Value": "CertificatesName",
-            "IsSensitive": false,
-            "Type": "Certificate",
             "Scope":{
                 "Environment": [
                     "Development"
