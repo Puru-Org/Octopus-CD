@@ -1,0 +1,11 @@
+[
+    {
+        "global_variable_path": "Octopus-GlobalVariable/Octopus-variables/AppSettings-vars.json",
+        "variable_names": ["AppSettings.var1", "AppSettings.Active", "AppSettings.clientID"]
+    },
+    {
+        "global_variable_path": "Octopus-GlobalVariable/Octopus-variables/exportedVariableSet-3-vars.json",
+        "variable_names": [],
+        "copy_all": true
+    }
+]

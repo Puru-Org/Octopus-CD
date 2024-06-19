@@ -1,0 +1,23 @@
+name: Clone list of Global variables - Pattern-2
+
+on:
+  workflow_dispatch:
+    inputs:
+      global_ref_json:
+        description: 'Path to the JSON file containing references to global variables'
+        required: true
+        type: string
+        default: Octopus-CD/Octopus/global_ref-2.json
+      project_variable_json:
+        description: 'Path to the destination JSON file'
+        required: true
+        type: string
+        default: Octopus-CD/Octopus/demo-variables.json
+
+jobs:
+  call-reusable-workflow:
+    uses: Puru-Org/Octopus-Deploy/.github/workflows/python-pattern-3.yaml@main
+    with:
+      global_ref_json: ${{ github.event.inputs.global_ref_json }}
+      project_variable_json: ${{ github.event.inputs.project_variable_json }}
+    secrets: inherit
