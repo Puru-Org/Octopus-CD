@@ -16,6 +16,9 @@ on:
         required: true
         description: Source variable file path
         default: "**/variable-2.json"
+      octopusApiName: 
+        required: true
+        description: 'Secret name of Octopus API'
     
         
 jobs:
@@ -26,10 +29,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Powershell script to add project variables
+      env: 
+        OCTOPUS_API_NAME: ${{ github.event.inputs.octopusApiName }}
       run: |
         # Define variables
         $octopusURL = "${{ github.event.inputs.octopus_url }}"
-        $apiKey = "${{ secrets.OCTOPUS_API_KEY }}"
+        $apiKey = "${{ secrets[github.event.inputs.octopusApiName] }}"
         $sourceVariableFile = "${{ github.event.inputs.variableFilePath }}"
         $projectName = "${{ github.event.inputs.ProjectName }}"
         $spaceName = "Default"
