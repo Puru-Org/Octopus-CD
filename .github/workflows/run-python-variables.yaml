@@ -11,12 +11,12 @@ on:
       global_ref_json: 
         type: string
         required: true
-        default: Octopus/global_ref.json
+        default: Octopus-CD/Octopus/global_ref.json
       project_variable_json:
         type: string
         required: true
         description: 'Destination Project file path'
-        default: Octopus/variable-2.json
+        default: Octopus-CD/Octopus/variable-2.json
       projectName:
         type: string 
         required: true
