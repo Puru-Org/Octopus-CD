@@ -43,5 +43,4 @@ jobs:
       with:
         projectName: ${{ github.event.inputs.projectName }}
         octopus_url: ${{ github.event.inputs.octopus_url }}
-        variableFilePath: ${{ needs.export-globalVariableToproject.outputs.project_variable_json }}
       secrets: inherit 
