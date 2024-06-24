@@ -112,5 +112,41 @@
                 ]
             }
         }
-    ]
+    ],
+    "ScopeValues": {
+        "Environments": [
+        {
+            "Id": "Environments-6",
+            "Name": "Development"
+        },
+        {
+            "Id": "Environments-2",
+            "Name": "Test"
+        },
+        {
+            "Id": "Environments-5",
+            "Name": "QA-1"
+        },
+        {
+            "Id": "Environments-3",
+            "Name": "QA-2"
+        },
+        {
+            "Id": "Environments-1",
+            "Name": "QA-3"
+        },
+        {
+            "Id": "Environments-4",
+            "Name": "Staging"
+        },
+        {
+            "Id": "Environments-7",
+            "Name": "Production"
+        },
+        {
+            "Id": "Environments-22",
+            "Name": "puru-testing-2"
+        }
+        ]
+    }
 }
