@@ -38,6 +38,6 @@ jobs:
     with:
       projectName: ${{ github.event.inputs.projectName }}
       octopus_url: ${{ github.event.inputs.octopus_url }}
-      variableFilePath: demo-variables.json
+      variableFileName: demo-variables.json
     secrets: inherit 
 
