@@ -1,4 +1,4 @@
-name: Clone list of Global variables - Pattern-2
+name: Global variables to Project and Import
 
 on:
   workflow_dispatch:
