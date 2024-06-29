@@ -7,12 +7,12 @@ on:
         description: 'Path to the JSON file containing references to global variables'
         required: true
         type: string
-        default: Octopus/global_ref.json
+        default: Octopus-CD/Octopus/global_ref.json
       project_variable_json:
         description: 'Path to the destination JSON file'
         required: true
         type: string
-        default: Octopus/demo-variables.json
+        default: Octopus-CD/Octopus/demo-variables.json
       projectName:
         type: string 
         required: true
@@ -38,5 +38,6 @@ jobs:
     with:
       projectName: ${{ github.event.inputs.projectName }}
       octopus_url: ${{ github.event.inputs.octopus_url }}
+      variableFilePath: ${{ github.event.inputs.project_variable_json }}
     secrets: inherit 
 
