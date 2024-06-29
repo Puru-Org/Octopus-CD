@@ -6,7 +6,7 @@
       "Description": null,
       "Scope": {
         "Environment": [
-          "Environments-2"
+          "Development"
         ]
       },
       "IsEditable": true,
@@ -20,7 +20,7 @@
       "Description": null,
       "Scope": {
         "Environment": [
-          "Environments-4"
+          "Test"
         ]
       },
       "IsEditable": true,
